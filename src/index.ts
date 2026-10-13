@@ -698,7 +698,7 @@ const tools: McpToolExport['tools'] = [
   {
     name: 'lookup_by_identifier',
     description:
-      "Look up HathiTrust's digitized-book holdings by a standard identifier (OCLC, LCCN, ISSN, ISBN, HathiTrust item id, or catalog record number). Returns the bibliographic record(s) plus every scanned copy, each flagged full-view (readable online) or limited (search-only) based on its rights code. Keyless — covers 18M+ volumes.",
+      "Look up HathiTrust's digitized-book holdings by a standard identifier (OCLC, LCCN, ISSN, ISBN, HathiTrust item id, or catalog record number). Returns the bibliographic record(s) plus every scanned copy, each flagged full-view (readable online) or limited (search-only) based on its rights code. Keyless — covers 18M+ volumes. Requires a free Pipeworx account (https://pipeworx.io/signup); anonymous and X-API-Key-only calls are refused.",
     inputSchema: {
       type: 'object',
       properties: {
@@ -718,7 +718,7 @@ const tools: McpToolExport['tools'] = [
   {
     name: 'get_record',
     description:
-      'Get a single HathiTrust catalog record by its record number, with the full structured bibliographic metadata (titles, ISBNs, ISSNs, OCLCs, LCCNs, publish dates, record URL) and the complete list of scanned copies flagged full-view vs limited. e.g. record_number "009166282" ("A manual for the study of insects"). Keyless.',
+      'Get a single HathiTrust catalog record by its record number, with the full structured bibliographic metadata (titles, ISBNs, ISSNs, OCLCs, LCCNs, publish dates, record URL) and the complete list of scanned copies flagged full-view vs limited. e.g. record_number "009166282" ("A manual for the study of insects"). Keyless. Requires a free Pipeworx account (https://pipeworx.io/signup); anonymous and X-API-Key-only calls are refused.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -734,7 +734,7 @@ const tools: McpToolExport['tools'] = [
   {
     name: 'check_full_view',
     description:
-      'Convenience check: given an identifier, report whether a readable (full-view) scanned copy exists on HathiTrust, how many copies are readable, and direct reading URLs. Keyless.',
+      'Convenience check: given an identifier, report whether a readable (full-view) scanned copy exists on HathiTrust, how many copies are readable, and direct reading URLs. Keyless. Requires a free Pipeworx account (https://pipeworx.io/signup); anonymous and X-API-Key-only calls are refused.',
     inputSchema: {
       type: 'object',
       properties: {

@@ -1,16 +1,44 @@
-# mcp-hathitrust
+# @pipeworx/hathitrust
 
-HathiTrust Bibliographic API MCP.
+HathiTrust's digitized-book holdings by standard identifier (OCLC, LCCN, ISSN,
+ISBN, HathiTrust item id, catalog record number): the bibliographic record plus
+every scanned copy, each flagged full-view (readable online) or limited
+(search-only).
 
-Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1683+ live data sources.
+Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1784+ live data sources. This is an independent, unofficial integration — not affiliated with, endorsed by, or published by the upstream provider.
 
 ## Tools
 
-| Tool | Description |
-|------|-------------|
-| `lookup_by_identifier` | Look up HathiTrust's digitized-book holdings by a standard identifier (OCLC, LCCN, ISSN, ISBN, HathiTrust item id, or catalog record number). Returns the bibliographic record(s) plus every scanned copy, each flagged full-view (readable online) or limited (search-only) based on its rights code. Keyless — covers 18M+ volumes. |
-| `get_record` | Get a single HathiTrust catalog record by its record number, with the full structured bibliographic metadata (titles, ISBNs, ISSNs, OCLCs, LCCNs, publish dates, record URL) and the complete list of scanned copies flagged full-view vs limited. e.g. record_number "009166282" ("A manual for the study of insects"). Keyless. |
-| `check_full_view` | Convenience check: given an identifier, report whether a readable (full-view) scanned copy exists on HathiTrust, how many copies are readable, and direct reading URLs. Keyless. |
+- `lookup_by_identifier(id_type, id)`: records and scanned copies for one identifier.
+- `get_record(record_number)`: one catalog record with full bibliographic metadata.
+- `check_full_view(id_type, id)`: whether a readable copy exists, with reading URLs.
+
+## Auth
+
+Keyless upstream, but **accounts only on Pipeworx**. The manifest row carries
+`accountOnly: true`, so the gateway refuses anonymous callers and callers that
+send only an `X-API-Key` (BYO with no account) with `account_required` and a
+link to https://pipeworx.io/signup?via=hathitrust. OAuth and paid Bearer-token
+accounts, x402 payers and internal traffic (`X-Pipeworx-Internal`, so the
+monitor) keep full access. The refusal happens before the pack runs, so no
+request reaches HathiTrust for a refused caller.
+
+Why (Bruce ruled 2026-10-13, fleet #2964): a residential proxy pool of ~171k IPs
+was enumerating HathiTrust's catalogue by OCLC number through REST
+`/v1/tools/lookup_by_identifier`, about 600k calls an hour, every IP kept under
+its per-IP limit. The pack had seen about 2 genuine calls a day. Per-IP limits
+cannot stop that shape, and an `X-API-Key` is never validated, so it is no
+identity either. The risk was HathiTrust blocking our egress for every caller.
+An account is the cheapest identity that cannot be minted in bulk.
+
+Lifting it is a one-line manifest change (drop `accountOnly`), then
+`node scripts/sync-pack-manifest.mjs`. Ask Bruce first. The gate itself lives in
+`workers/gateway/src/account-only.ts`.
+
+## Data sources
+
+- HathiTrust Digital Library, Bibliographic API: catalog records and per-copy
+  rights codes.
 
 ## Quick Start
 
@@ -56,7 +84,7 @@ directly, instead of just this one's:
 }
 ```
 
-Both URLs reach the same gateway and the same 1683+ data sources. The
+Both URLs reach the same gateway and the same 1784+ data sources. The
 only difference is which pack's tools are listed **directly**; `ask_pipeworx`
 reaches all of them from either one.
 
