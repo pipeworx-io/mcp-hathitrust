@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-hathitrust",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "HathiTrust Bibliographic API MCP.",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "hathitrust",
     "gatewaySlug": "hathitrust",
-    "sourceHash": "v1-1085c2b9ed3696d378cc21417a53a7983c08fa130fcc500c3394397b2a4ad3f2",
-    "sourceCommit": "4844029e402d6bd2fe735add8abf6d46735f8ed5"
+    "sourceHash": "v1-c82a6543829118667c4f37630da67eec42a011dc811d6a69381b9c0f53e7ad86",
+    "sourceCommit": "0ca9712c0ac03bb0121cc7e81b202d0c45ac02ca"
   }
 }
